@@ -9,16 +9,20 @@ const auth = {
     pass: PASSWORD,
 };
 
-if (isWorkingDay()) {
-    const issues = getIssues();
-    issues.forEach((json) => {
-        request
-            .post(URI, { auth, json })
-            .then((res) => {
-                console.log('Success!!!')
-            })
-            .catch((err) => {
-                console.error(`Error: ${err.error.message}`);
-            });
-    });
+const postIssues = async () => {
+    if (await isWorkingDay()) {
+        const issues = await getIssues();
+        issues.forEach(async(json) => {
+            await request
+                .post(URI, { auth, json })
+                .then((res) => {
+                    console.log('Success!!!')
+                })
+                .catch((err) => {
+                    console.error(`Error: ${err.error.message}`);
+                });
+        });
+    }
 }
+
+postIssues();
